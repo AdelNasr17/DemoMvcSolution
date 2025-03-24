@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Demo.DataAccess.Repositories.Interfaces
 {
-    internal interface IEmployeeRepository:IGenericRepository<Employee>
+    public interface IEmployeeRepository:IGenericRepository<Employee>
     {
   
 

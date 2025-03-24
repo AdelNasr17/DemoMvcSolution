@@ -2,6 +2,7 @@
 using Demo.DataAccess.Data.Configurations;
 using Demo.DataAccess.Models.DepartmentModel;
 using Demo.DataAccess.Models.EmployeeModel;
+using Demo.DataAccess.Models.Shared;
 using System.Reflection;
 
 namespace Demo.DataAccess.Data.Contexts
@@ -20,6 +21,7 @@ namespace Demo.DataAccess.Data.Contexts
             //modelBuilder.ApplyConfiguration<Department>(new DepartmentConfigurations());
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             //modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+            //modelBuilder.Entity<BaseEntity>().HasQueryFilter(B=> B.IsDeleted);
         }
 
 

@@ -6,7 +6,7 @@ namespace Demo.DataAccess.Data.Configurations
 {
     internal class EmployeeConfigurations : BaseEntityConfiguration<Employee>, IEntityTypeConfiguration<Employee>
     {
-        public void Configure(EntityTypeBuilder<Employee> builder)
+        public  void Configure(EntityTypeBuilder<Employee> builder)
         {
             builder.Property(E => E.Id).UseIdentityColumn(1, 1);
             builder.Property(E => E.Name).HasColumnType("nvarchar(50)");

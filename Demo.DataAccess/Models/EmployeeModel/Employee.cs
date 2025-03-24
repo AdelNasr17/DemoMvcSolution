@@ -2,7 +2,7 @@
 using Demo.DataAccess.Models.Shared;
 using Demo.DataAccess.Models.Shared.Enums;
 
-namespace Demo.DataAccess.Models.EmployeeModel
+ namespace Demo.DataAccess.Models.EmployeeModel
 {
     public class Employee : BaseEntity
     {

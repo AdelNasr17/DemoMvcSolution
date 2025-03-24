@@ -11,33 +11,18 @@ namespace Demo.DataAccess.Repositories.Classes
 {
     public class GenericRepository<T>(ApplicationDbContext dbContext) : IGenericRepository<T> where T : BaseEntity
     {
-        int IGenericRepository<T>.Add(T Entity)
-        {
-            dbContext.Set<T>().Add(Entity);
-            return dbContext.SaveChanges();
+        void IGenericRepository<T>.Add(T Entity) => dbContext.Set<T>().Add(Entity);
 
-        }
-
-        public IEnumerable<T> GetAll()
-        {
-            
-                return dbContext.Set<T>().ToList();
+        public IEnumerable<T> GetAll()=> dbContext.Set<T>().ToList();
        
-        }
 
         T? IGenericRepository<T>.GetById(int id) => dbContext.Set<T>().Find(id);
 
 
-        int IGenericRepository<T>.Remove(T Entity)
-        {
-            dbContext.Set<T>().Remove(Entity);
-            return dbContext.SaveChanges();
-        }
+        void IGenericRepository<T>.Remove(T Entity) => dbContext.Set<T>().Remove(Entity);
+      
 
-        int IGenericRepository<T>.Update(T Entity)
-        {
-            dbContext.Set<T>().Update(Entity);
-            return dbContext.SaveChanges();
-        }
+        void IGenericRepository<T>.Update(T Entity) => dbContext.Set<T>().Update(Entity);
+      
     }
 }

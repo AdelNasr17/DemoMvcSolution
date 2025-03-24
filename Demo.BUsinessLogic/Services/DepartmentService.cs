@@ -1,21 +1,20 @@
-﻿using Demo.BusinessLogic.DataTransferObject;
-using Demo.BusinessLogic.Factories;
-using Demo.DataAccess.Models.DepartmentModel;
+﻿using Demo.DataAccess.Models.DepartmentModel;
+using Demo.DataAccess.Repositories.Classes;
 using Demo.DataAccess.Repositories.Interfaces;
 
 namespace Demo.BusinessLogic.Services
 {
     public class DepartmentService : IDepartmentService
     {
-        private readonly IDepartmentRepository _departmentRepository;
+        private readonly IUnitOfWork _UnitOfWork;
 
-       
-        public DepartmentService(IDepartmentRepository departmentRepository) // 1.Injection
+
+        public DepartmentService(IUnitOfWork UnitOfWork) // 1.Injection
         {
-            _departmentRepository = departmentRepository;
+            _UnitOfWork = UnitOfWork;
         }
 
-        public int Add(Department department)
+        public void Add(Department department)
         {
             var mappedDepartment = new Department()
             {
@@ -24,34 +23,35 @@ namespace Demo.BusinessLogic.Services
                 CreatedOn = DateTime.Now
 
             };
-          return   _departmentRepository.Add(mappedDepartment);
+            _UnitOfWork.DepartmentRepository.Add(mappedDepartment);
+            _UnitOfWork.Complete();
         }
 
         public IEnumerable<Department> GetAll()
         {
-            return _departmentRepository.GetAll();
-          
+            return _UnitOfWork.DepartmentRepository.GetAll();
+
         }
 
         public Department GetById(int? id)
         {
             if (id is null)
                 return null;
-           var department=_departmentRepository.GetById(id.Value);
+            var department = _UnitOfWork.DepartmentRepository.GetById(id.Value);
             if (department is null)
                 return null;
 
             return department;
 
         }
-     
-        public int Remove(Department department)
-        {
-           return _departmentRepository.Remove(department);
 
+        public void Remove(Department department)
+        {
+            _UnitOfWork.DepartmentRepository.Remove(department);
+            _UnitOfWork.Complete();
         }
 
-        public int Update(Department department)
+        public void Update(Department department)
         {
 
             //var dept = GetById(department.Id);
@@ -63,7 +63,8 @@ namespace Demo.BusinessLogic.Services
             //dept.Name = department.Name;
             //dept.Code = department.Code;
 
-          return  _departmentRepository.Update(department);
+            _UnitOfWork.DepartmentRepository.Update(department);
+            _UnitOfWork.Complete();
 
         }
 

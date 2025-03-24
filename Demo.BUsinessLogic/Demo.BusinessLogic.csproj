@@ -10,8 +10,4 @@
     <ProjectReference Include="..\Demo.DataAccess\Demo.DataAccess.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\Department\" />
-  </ItemGroup>
-
 </Project>

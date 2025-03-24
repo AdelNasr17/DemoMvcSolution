@@ -1,13 +1,14 @@
 ﻿using Demo.DataAccess.Models.DepartmentModel;
+using Demo.DataAccess.Repositories.Interfaces;
 
 namespace Demo.BusinessLogic.Services
 {
     public interface IDepartmentService
     {
-        int Add(Department department);
+        void Add(Department department);
         IEnumerable<Department> GetAll();
         Department GetById(int? id);
-        int Remove(Department department);
-        int Update(Department department);
+        void Remove(Department department);
+        void Update(Department department);
     }
 }

@@ -1,8 +1,9 @@
-﻿using Demo.DataAccess.Models.DepartmentModel;
-using Demo.DataAccess.Repositories.Classes;
-using Demo.DataAccess.Repositories.Interfaces;
+﻿
+using Demo.BusinessLogic.DataTransferObject.Departments;
+using Demo.BusinessLogic.Factories;
+using Microsoft.EntityFrameworkCore;
 
-namespace Demo.BusinessLogic.Services
+namespace Demo.BusinessLogic.Services.Classes
 {
     public class DepartmentService : IDepartmentService
     {
@@ -14,44 +15,85 @@ namespace Demo.BusinessLogic.Services
             _UnitOfWork = UnitOfWork;
         }
 
-        public void Add(Department department)
+        public void Add(CreatedDepartmentDto departmentDto)
         {
-            var mappedDepartment = new Department()
+            // CreatedDepartmentDto=> Department
+            var department = new Department
             {
-                Code = department.Code,
-                Name = department.Name,
-                CreatedOn = DateTime.Now
-
+                Name = departmentDto.Name,
+                Code = departmentDto.Code,
+                Description = departmentDto.Description,
+                CreatedOn = departmentDto.CreateOn.ToDateTime(new TimeOnly())
             };
-            _UnitOfWork.DepartmentRepository.Add(mappedDepartment);
+
+            _UnitOfWork.DepartmentRepository.Add(department);
             _UnitOfWork.Complete();
         }
 
-        public IEnumerable<Department> GetAll()
+        public IEnumerable<DepartmentToReturnDto> GetAll()
         {
-            return _UnitOfWork.DepartmentRepository.GetAll();
+            // Department -> DepartmentToReturnDto
+          var department = _UnitOfWork.DepartmentRepository.GetAllQueryable()
+                .Select(D => new DepartmentToReturnDto
+                {
+                    Id = D.Id,
+                    Name = D.Name,
+                    Code = D.Code,
+                    Description = D.Description,
+                    DateOfCreation = DateOnly.FromDateTime(D.CreatedOn)
+                }).AsNoTracking().ToList();
+
+           return department;
+        }
+
+        public DepartmentDetailsDto? GetById(int? id)
+        {
+            // Department(id) -> DepartmentDetailsDto(id)
+            var department = _UnitOfWork.DepartmentRepository.GetById(id);
+            if (department == null)
+                return null;
+            else
+            {
+                return new DepartmentDetailsDto
+                {
+                    Id = department.Id,
+                    Name = department.Name,
+                    Code = department.Code,
+                    Description = department.Description,
+                    CreatedOn = DateOnly.FromDateTime(department.CreatedOn)
+                };
+            }
+              
+                                
+
+            //if (id is null)
+            //    return null;
+            //var department = _UnitOfWork.DepartmentRepository.GetById(id.Value);
+            //if (department is null)
+            //    return null;
+
+            //return department;
 
         }
 
-        public Department GetById(int? id)
+
+        public void Remove(int id)
         {
-            if (id is null)
-                return null;
-            var department = _UnitOfWork.DepartmentRepository.GetById(id.Value);
-            if (department is null)
-                return null;
+            var department = _UnitOfWork.DepartmentRepository.GetById(id);
 
-            return department;
+            if (department == null)
+                throw new Exception("No Deleted");
 
-        }
-
-        public void Remove(Department department)
-        {
-            _UnitOfWork.DepartmentRepository.Remove(department);
+            else
+            {
+                _UnitOfWork.DepartmentRepository.Remove(department);
+            }
             _UnitOfWork.Complete();
         }
 
-        public void Update(Department department)
+    
+
+        public void Update(UpdatedDepartmentDto departmentDto)
         {
 
             //var dept = GetById(department.Id);
@@ -62,8 +104,17 @@ namespace Demo.BusinessLogic.Services
             //}
             //dept.Name = department.Name;
             //dept.Code = department.Code;
+            var department = new Department
+            {
+                Id = departmentDto.Id,
+                Name = departmentDto.Name,
+                Code = departmentDto.Code,
+                Description = departmentDto.Description,
+                CreatedOn = departmentDto.CreateOn.ToDateTime(new TimeOnly())
+            };
 
-            _UnitOfWork.DepartmentRepository.Update(department);
+            _UnitOfWork.DepartmentRepository.Update(departmentDto.ToEntity());
+          
             _UnitOfWork.Complete();
 
         }

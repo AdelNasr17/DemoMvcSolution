@@ -1,7 +1,10 @@
-using Demo.BusinessLogic.Services;
+using Demo.BusinessLogic.Services.Classes;
+using Demo.BusinessLogic.Services.DepartmentService;
+using Demo.BusinessLogic.Services.EmployeeService;
+using Demo.BusinessLogic.Services.Interfaces;
 using Demo.DataAccess.Data.Contexts;
-using Demo.DataAccess.Repositories.Classes;
-using Demo.DataAccess.Repositories.Interfaces;
+using Demo.DataAccess.Repositories.Employees;
+using Demo.DataAccess.Repositories.Shared;
 using Microsoft.EntityFrameworkCore;
 
 namespace Route.Demo.PL
@@ -24,7 +27,10 @@ namespace Route.Demo.PL
             //builder.Services.AddScoped<DepartmentRepository>();
             //builder.Services.AddScoped<IDepartmentRepository,DepartmentRepository>();
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+            builder.Services.AddScoped<IEmployeeRepository,EmployeeRepository>();
+            builder.Services.AddScoped<IEmployeeService, EmployeeService>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 
 
 

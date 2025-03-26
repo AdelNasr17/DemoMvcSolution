@@ -1,4 +1,4 @@
-﻿using Demo.BusinessLogic.DataTransferObject;
+﻿using Demo.BusinessLogic.DataTransferObject.Departments;
 using Demo.DataAccess.Models.DepartmentModel;
 using System;
 using System.Collections.Generic;
@@ -10,17 +10,18 @@ namespace Demo.BusinessLogic.Factories
 {
     static class DepartmentFactory
     {
-        public static DepartmentDto ToDepartmentDto(this Department D) => new DepartmentDto()
+        public static DepartmentToReturnDto ToDepartmentToReturnDto(this Department D) => new DepartmentToReturnDto()
         {
-            DeptId = D.Id,
+            Id = D.Id,
             Name = D.Name,
             Code = D.Code,
             Description = D.Description,
             DateOfCreation = DateOnly.FromDateTime(D.CreatedOn)
         };
 
-        public static DepartmentDetialsDto ToDepartmentDetialsDto(this Department D) => new DepartmentDetialsDto()
+        public static DepartmentDetailsDto? ToDepartmentDetailsDto(this Department D) => new DepartmentDetailsDto()
         {
+            
             Id = D.Id,
             Name = D.Name,
             Code = D.Code,
@@ -33,7 +34,7 @@ namespace Demo.BusinessLogic.Factories
             Name = department.Name,
             Code = department.Code,
             Description = department.Description,
-            CreatedOn = department.DateOfCreation.ToDateTime(new TimeOnly())
+            CreatedOn = department.CreateOn.ToDateTime(new TimeOnly())
         };
 
         public static Department ToEntity(this UpdatedDepartmentDto department) => new Department()
@@ -42,10 +43,8 @@ namespace Demo.BusinessLogic.Factories
             Name = department.Name,
             Code = department.Code,
             Description = department.Description,
-            CreatedOn = department.DateOfCreation.ToDateTime(new TimeOnly())
+            CreatedOn = department.CreateOn.ToDateTime(new TimeOnly())
         };
-
-
-
+   
     }
 }

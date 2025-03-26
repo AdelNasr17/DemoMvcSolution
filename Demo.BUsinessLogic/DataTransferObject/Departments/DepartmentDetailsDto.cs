@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo.BusinessLogic.DataTransferObject
+namespace Demo.BusinessLogic.DataTransferObject.Departments
 {
-    public class DepartmentDetialsDto
+    public class DepartmentDetailsDto
     {
         //Constructor Mapping
         //public DepartmentDetialsDto(Department department)
